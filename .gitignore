@@ -1,0 +1,15 @@
+/build/
+/node_modules/
+/coverage/
+/dist/
+*.exe
+*.obj
+*.o
+*.ilk
+*.pdb
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.*
+vulnerability.md

@@ -1,0 +1,18 @@
+{
+  "name": "sentinel-dtl",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tests de integracion Node para SentinelDTL.",
+  "scripts": {
+    "build:c": "bash scripts/build.sh",
+    "check:js": "node scripts/check-js.mjs",
+    "test": "node --test \"tests/node/*.test.js\"",
+    "test:all": "node scripts/ci.mjs",
+    "ci": "node scripts/ci.mjs",
+    "ci:posix": "bash scripts/ci.sh"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

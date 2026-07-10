@@ -1,0 +1,14 @@
+{
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "files.exclude": {
+    "build": true,
+    "node_modules": true,
+    "coverage": true,
+    "dist": true
+  },
+  "C_Cpp.default.cStandard": "c11",
+  "C_Cpp.default.includePath": ["${workspaceFolder}/include"],
+  "C_Cpp.errorSquiggles": "enabled"
+}

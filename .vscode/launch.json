@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run SentinelDTL baseline",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/sentineldtl",
+      "args": ["baseline"],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build:c",
+      "MIMode": "gdb"
+    }
+  ]
+}
