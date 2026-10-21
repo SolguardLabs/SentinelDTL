@@ -5,6 +5,20 @@ alcance de revision recomendado.
 
 ## Modelo de seguridad
 
+```mermaid
+flowchart TB
+    U[Operador autorizado] --> C[Plano de control]
+    A[Cuenta] --> S[Sesion]
+    S --> Q[Cola]
+    C --> E[Motor]
+    Q --> E
+    E --> V[Vault]
+    V --> R[Snapshot de riesgo]
+    V --> L[Envelope de liquidez]
+    R -.->|solo lectura| U
+    L -.->|solo lectura| U
+```
+
 SentinelDTL asume un plano de control autorizado que administra pausas,
 reanudaciones, modo de proteccion y ajustes de vault. Las cuentas y sesiones se
 modelan como entidades internas ya autenticadas por la capa superior.
@@ -32,6 +46,7 @@ Los controles principales son:
 - Una pausa debe bloquear intake y ejecucion.
 - El modo de proteccion debe bloquear nuevo intake.
 - El vault no debe cruzar su floor de reserva.
+- Los informes de capacidad no alteran balances ni autorizan transacciones.
 
 ## Validacion automatizada
 
@@ -44,6 +59,7 @@ La suite publica cubre:
 - procesamiento de cola admitida durante proteccion;
 - ejecucion batch y cancelacion;
 - conservacion de caja y unidades.
+- envelope de liquidez y estres de reservas con tests C nativos.
 
 Los tests se ejecutan con:
 

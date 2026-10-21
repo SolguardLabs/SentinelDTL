@@ -4,6 +4,7 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 bash "${root}/scripts/build.sh"
+bash "${root}/scripts/test-native.sh"
 node "${root}/scripts/check-js.mjs"
 node --test "${root}/tests/node"/*.test.js
 "${root}/build/sentineldtl" --list >/dev/null

@@ -2,6 +2,7 @@
 #define SENTINEL_SENTINEL_H
 
 #include "sentinel/amount.h"
+#include "sentinel/analytics.h"
 #include "sentinel/engine.h"
 #include "sentinel/error.h"
 #include "sentinel/events.h"

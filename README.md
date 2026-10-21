@@ -7,9 +7,8 @@ ejecucion. Modela pausas operativas, modo de proteccion, circuit breakers,
 limites por sesion, colas de ordenes y estado de vault para flujos de salida de
 unidades de riesgo.
 
-El proyecto esta pensado como una base compacta de auditoria: todo el estado se
-mantiene en memoria, la CLI produce JSON estable y los tests JavaScript validan
-transiciones observables sin depender de servicios externos.
+El motor mantiene estado determinista en memoria, produce JSON estable y
+permite verificar transiciones sin depender de servicios externos.
 
 ## Componentes
 
@@ -21,10 +20,23 @@ transiciones observables sin depender de servicios externos.
 - `src/order.c`: ciclo de vida de ordenes admitidas.
 - `src/engine.c`: coordinacion de cuentas, sesiones, ordenes y vault.
 - `src/json.c`: salida JSON determinista para escenarios y tests.
+- `src/analytics.c`: envelope de liquidez y sensibilidad de reservas de solo
+  lectura.
 - `src/scenario.c`: escenarios CLI reproducibles.
 - `tests/node`: tests de integracion con `node:test`.
 
 ## Flujo operativo
+
+```mermaid
+flowchart LR
+    A[Cuenta] --> S[Sesion]
+    S --> Q[Cola de ordenes]
+    Q --> E[Motor de ejecucion]
+    E --> V[Vault]
+    V --> R[Snapshot de riesgo]
+    V --> L[Envelope de liquidez]
+    E --> J[Eventos y JSON]
+```
 
 1. El motor arranca con una politica de riesgo, un vault y cuentas registradas.
 2. Una cuenta abre una sesion de ejecucion con limites de notional y cola.
@@ -129,7 +141,24 @@ Dependabot esta configurado para GitHub Actions y ecosistema npm.
 
 ## Estado
 
-SentinelDTL es una implementacion de referencia para entornos controlados,
-simulacion de riesgo y ejercicios de revision. Cualquier adaptacion productiva
-debe pasar por hardening de persistencia, autenticacion, observabilidad,
-concurrencia y revision independiente.
+El release estable es `Production 1.0.0` (`v1.0.0`). La rama `production` y el
+tag anotado referencian el mismo commit de `main`; GitHub Actions verifica la
+identidad. El paquete no incluye despliegue de red ni claves. Una integracion
+externa debe definir persistencia, autenticacion y control de concurrencia.
+
+## Capacidad y estres
+
+La API `sg_liquidity_envelope_from_vault` toma un snapshot del vault y un
+estres en puntos basicos. Calcula efectivo liquido, headroom frente al floor,
+capacidad disponible y capacidad tras estres sin alterar reservas. Por ejemplo,
+con `900_000` de reservas, `250_000` de floor y `100_000` bloqueados, la
+capacidad es `650_000`. Un estres del 10 % deja `560_000` de headroom.
+La especificacion de unidades esta en [modelo economico](docs/modelo-economico.md).
+
+## Documentacion
+
+- [Arquitectura y ciclo de sesion](docs/arquitectura.md)
+- [Modelo economico y sensibilidad](docs/modelo-economico.md)
+- [Integracion C/JSON](docs/integracion.md)
+- [Operacion y controles](docs/operacion.md)
+- [Politica de seguridad](SECURITY.md)
