@@ -13,7 +13,7 @@ $(TARGET): $(SOURCES) $(wildcard include/sentinel/*.h)
 	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET)
 
 test: $(TARGET)
-	node --test "tests/node/*.test.js"
+	bash scripts/tests.sh
 
 ci:
 	bash scripts/ci.sh
